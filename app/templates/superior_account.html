@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Output</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+            <h2>创建高级号</h2>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="server_id">
+                            <option value="" disabled selected>请选择游戏服</option>
+                            <option value="3000">腾讯sdk服</option>
+                            <option value="1002">TX-BVT-001服</option>
+                            <option value="1003">TX-BVT-002服</option>
+                            <option value="20">Wilson服</option>
+                            <option value="14">策划十三服</option>
+                            <option value="7">老五服</option>
+                        </select>
+                        <label>游戏服</label>
+                    </div>
+                </div>
+
+                <div class="input-field col s12">
+                    <input placeholder="请填写登陆名" id="login_name" type="text" class="validate">
+                    <label for="login_name">登陆名</label>
+                </div>
+
+                <a class="waves-effect waves-light btn" id="query_by_role_id">
+                    <i class="material-icons right">send</i>一键高级号</a>
+            </div>
+        </div>
+        <div style="height:260px"></div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+
+        $(document).ready(function(){
+            $("#query_by_role_id").click(function(){
+                var server_id = $('#server_id').val();
+                var login_name = $("#login_name").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/create_superior_account",
+                    data: {
+                        "server_id": server_id,
+                        "login_name": login_name
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        if (res.state == 0) {
+                            Materialize.toast(res.msg, 2000)
+                        } else {
+                            Materialize.toast('操作失败', 2000)
+                        }
+                    }
+                });
+                Materialize.toast("请求处理中，请稍等...", 2000);
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>canary</title>
+    <script>
+        $(document).ready(function(){
+            $('.parallax').parallax();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ url_for('static', filename='img/starry.jpg') }}"></div>
+    </div>
+    <div class="section white">
+        <div class="row container">
+            <h2 class="header">Welcome</h2>
+            <p class="grey-text text-darken-3 lighten-3">This is a site for Game Developer.</p>
+            <a class="btn btn-flat waves-effect #006064 cyan darken-4 white-text" href="{{ url_for('protocol') }}">
+                start<i class="material-icons right">send</i></a>
+        </div>
+    </div>
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ url_for('static', filename='img/corner_sea.jpg') }}"></div>
+    </div>
+{% endblock %}
+
+{%  block footer %}
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

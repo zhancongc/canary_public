@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Activities</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Start Activities</h2>
+    <p class="caption">Start activities instantly.</p>
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Activity property</span>
+                    <form action="{{ url_for('web.start_activities') }}" method="post" name="start_activities">
+                        {{ form.csrf_token }}
+                        {% if form.csrf_token.errors %}
+                            <div class="warning">You have submitted an invalid CSRF token</div>
+                        {% endif %}
+                        <div class="input-field validate col s12 l6">
+                            <i class="material-icons prefix">games</i>
+                            <select class="validate" name="game" required>
+                                <option value="GCLD">GCLD</option>
+                                <option value="NHLY">NHLY</option>
+                            </select>
+                            <label for="game">game</label>
+                        </div>
+                        <div class="input-field validate col s12 l6">
+                            <i class="material-icons prefix">subject</i>
+                            <input class="validate" name="country" type="text" lengnth="5" required>
+                            <label>country</label>
+                        </div>
+                        <div class="input-field validate col s12 l6">
+                            <i class="material-icons prefix">subject</i>
+                            <input class="validate" name="version" type="text" lengnth="5" required>
+                            <label>version</label>
+                        </div>
+                        <div class="input-field validate col s12 l6">
+                            <i class="material-icons prefix">access_time</i>
+                            <input class="validate" name="period" type="text" length="3" required>
+                            <label for="period">period (hour)</label>
+                        </div>
+                        <div class="input-field validate col s12">
+                            <i class="material-icons prefix">turned_in_not</i>
+                            <input class="validate" name="activity_id" type="text" length="8" required>
+                            <label for="activity_id">activity id</label>
+                        </div>
+                        <div class="input-field validate col s12">
+                                <i class="material-icons prefix">class</i>
+                                <input class="validate" name="parameter" type="text" length="500" required>
+                                <label for="parameter">parameter</label>
+                        </div>
+                        <a class="waves-effect waves-light btn" type="submit" onclick="start_activities.submit();">
+                            submit<i class="material-icons right">send</i>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('select').material_select();
+            $('input, textarea').characterCounter();
+        });
+    </script>
+{% endblock %}

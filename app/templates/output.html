@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Output</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h2>Output</h2>
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        {% if url %}
+                            <span class="card-title">Properties</span>
+                            <p><a class="btn waves-effect waves-green" href="{{ url }}">
+                                <i class="material-icons left">get_app</i>Download</a></p>
+                        {% endif %}
+                        {% if warning %}
+                            <span class="card-title">Warning</span>
+                            <p>{{ warning }}</p>
+                        {% endif %}
+                        {% if result %}
+                            <span class="card-title">Result</span>
+                            <p>{{ result }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

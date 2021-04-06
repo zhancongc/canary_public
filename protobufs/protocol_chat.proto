@@ -1,0 +1,299 @@
+import "protocol_base.proto";
+
+package Lyingdragon.Protocol;
+
+enum Chat_Channel {
+        CC_SYSTEM               = 1;
+        CC_WORLD                = 2;
+        CC_COUNTRY              = 3;
+        CC_CROP                 = 4;
+        CC_AREA                 = 5;
+        CC_CONVERSATION         = 6;
+        CC_BOARD                = 7;
+        CC_TEAM                 = 8;
+        CC_LEVEL                = 9;
+        CC_VIP                  = 10;
+        CC_WORLD_CITY           = 11;
+        CC_GLOBAL               = 12;
+}
+
+enum Chat_FeedbackInfo {
+        CF_NOACCEPT      = 1;
+        CF_OFFLINE       = 2;
+        CF_NOBODY        = 3;
+        CF_NOFEED        = 4;
+        CF_BLACKPLAYER   = 5;
+        CF_STOPSPEAK     = 6;
+        CF_CENTER        = 7;
+}
+
+enum Chat_ContentType {
+        CCT_CHAT_CONTENT          = 14;/// 普通聊天消息
+        CCT_SYS_CONTENT           = 15;/// 系统消息
+        CCT_SPECIAL_SYS_CONTENT   = 16;/// 特殊颜色系统消息
+}
+
+message ChatMessage {
+        optional int64 role_id = 2;
+        optional int32 img_type = 3;
+        optional int32 img_id = 4;
+        optional int32 msg_type = 5;
+        optional int32 country_id = 6;
+        optional int32 officer = 7;
+        optional int32 commander = 8;
+        optional int32 extreme_vip  = 9;
+        optional int32 instructor = 10;
+        optional int32 zone_id = 11;
+        optional string server_name  = 12;
+        optional int32 feedback_info = 13;
+        optional int32 player_type = 14;
+        optional string player_name = 15;
+        optional string content = 16;
+        optional int32 content_type_num = 17;
+        optional int32 content_type = 18;
+        optional int32 chat_style = 19;
+        optional string crop_name = 20;
+        optional int32 chat_tag = 21;
+        optional int32 crop_pos = 22;
+        optional int32 index = 23;
+        optional int32 send_time = 24;
+        optional int32 crop_id = 25;
+        optional int64 recv_id = 26;
+        optional int32 recv_zone_id = 27;
+}
+
+message C2S_ChatMsg {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_MSG];
+        optional int32 msg_type = 2;
+        optional int32 zone_id = 3;
+        optional string contact_player_name = 4;
+        optional string content = 5;
+        optional int32 content_type_num = 6;
+        optional int32 content_type = 7;
+        optional int64 to_role_id = 8;
+}
+
+message S2C_ChatMsg {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_MSG];
+        enum ChatType{
+            system   = 1;
+            sender   = 2;
+            accepter = 3;
+        }
+        optional int32 ret = 2;
+        optional ChatMessage msg = 25;
+}
+
+message S2C_BroadMsg {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_BROAD_MSG];
+        optional int32 msg_id = 2;
+        optional int32 duration = 3;
+        optional int32 interval = 4;
+        optional string content = 5;
+}
+
+message S2C_FilterWordList {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_FILTER_WORD_LIST];
+        optional string filter_word = 2;
+}
+
+message S2C_FilterWordDelete {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_FILTER_WORD_DELETE];
+        optional string filter_word = 2;
+}
+
+message C2S_IncomeFind {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_INCOME_FIND];
+        optional int32 income_find_state = 2;
+}
+
+message S2C_IncomeFind {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_INCOME_FIND];
+        optional int32 income_find_state = 2;
+}
+
+message S2C_Instructor {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_INSTRUCTOR];
+        optional int32 is_instructor = 2;
+}
+
+message S2C_PromptInfo {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_PROMPT_INFO];
+        optional string prompt_info = 2;
+}
+
+message C2S_ChatView {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_VIEW];
+        optional int32 types= 2;
+}
+
+message C2S_ChatMainCityLock {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_MAIN_CITY_LOCK];
+}
+
+//每次登录后，只需请求一次
+message C2S_OfflineMessage {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_OFFLINE_MESSAGE];
+}
+
+message ConversationMessage {
+        message Item {
+                optional string content = 1;
+                optional int32 content_type_num = 2;
+                optional int32 content_type = 3;
+                optional int32 send_time = 4;
+                optional int32 is_send = 5;
+        }
+        optional int64 role_id = 1;
+        optional int32 img_id = 2;
+        optional int32 img_type = 3;
+        optional int32 country_id = 4;
+        optional int32 chat_style = 5;
+        optional string role_name = 6;
+        optional int32 zone_id = 7;
+        optional int32 total = 8;
+        repeated Item contents = 9;
+        optional bool is_online = 10;
+        optional string crop_name = 11;
+        optional int32 last_logout_time = 12;
+}
+
+message S2C_OfflineMessage {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_OFFLINE_MESSAGE];
+        message Message {
+                message Item {
+                        optional string content = 1;
+                        optional int32 content_type_num = 2;
+                        optional int32 content_type = 3;
+                        optional int32 send_time = 4;
+                }
+                optional int64 role_id = 1;
+                optional int32 img_id = 2;
+                optional int32 img_type = 3;
+                optional int32 country_id = 4;
+                optional int32 chat_style = 5;
+                optional string role_name = 6;
+                optional int32 zone_id = 7;
+                repeated Item contents = 8;
+        }
+        repeated Message messages = 2;;
+        repeated ConversationMessage conversations = 3;
+}
+
+message C2S_ChatImpeach {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_IMPEACH];
+        optional string role_id = 2;
+}
+
+message S2C_ChatImpeach {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_IMPEACH];
+}
+
+message C2S_ChatNotice {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_NOTICE];
+}
+
+message S2C_ChatNotice {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_NOTICE];
+        optional int32 id = 2;
+        optional string data_params = 3; //split by '\r'
+        optional int64 global_id = 4;
+}
+
+message C2S_ChatBroad {
+        optional ProtocolType type = 1 [default = C_2_S_CHAT_BROAD];
+}
+
+message S2C_ChatBroad {
+        optional ProtocolType type = 1 [default = S_2_C_CHAT_BROAD];
+        message Message {
+                optional int32 id = 1;
+                optional int32 start_time = 2;
+                optional int32 end_time = 3;
+                optional int32 interval = 4;
+                optional string text = 5;
+                optional string title = 6;
+        }
+        repeated Message messages = 2;
+        optional bool is_delete = 3;
+}
+
+message C2S_ChatRecord {
+        optional ProtocolType type = 1 [ default = C_2_S_CHAT_RECORD];
+        optional int32 msg_type = 2;
+        optional int32 index = 3;
+        optional int32 num = 4;
+}
+
+message S2C_ChatRecord {
+        optional ProtocolType type = 1 [ default = S_2_C_CHAT_RECORD];
+        message Record {
+                optional int32 index = 1;
+                optional int64 role_id = 2;
+                optional string player_name = 3;
+                optional int32 img_type = 4;
+                optional int32 img_id = 5;
+                optional int32 officer = 6;
+                optional int32 msg_type = 7;
+                optional int32 crop_pos = 8;
+                optional int32 chat_tag = 9;
+                optional int32 country_id = 10;
+                optional int32 chat_style = 11;
+                optional int32 player_type = 12;
+                optional int32 content_type = 13;
+                optional int32 feedback_info = 14;
+                optional int32 content_type_num = 15;
+                optional string content = 16;
+                optional string crop_name = 17;
+                optional int32 send_time = 18;
+        }
+        optional int32 msg_type = 2;
+        optional int32 index = 3;
+        optional int32 total = 4;
+        repeated ChatMessage msgs = 5;
+}
+
+message C2S_ChatConversationMsg {
+        optional ProtocolType type = 1 [ default = C_2_S_CHAT_CONVERSATION_MSG];
+        optional int32 role_id = 2;
+        optional int32 zone_id = 3;
+        optional int32 pos = 4;
+        optional int32 num = 5;
+}
+
+message S2C_ChatConversationMsg {
+        optional ProtocolType type = 1 [ default = S_2_C_CHAT_CONVERSATION_MSG];
+        optional int64 role_id = 2;
+        optional int32 zone_id = 3;
+        optional int32 pos = 4;
+        optional int32 num = 5;
+        optional ConversationMessage msg = 6;
+}
+
+message C2S_ChatDeleteConversation {
+        optional ProtocolType type = 1 [ default = C_2_S_CHAT_DELETE_CONVERSATION];
+        optional int64 role_id = 2;
+        optional int32 zone_id = 3;
+}
+
+message S2C_ChatDeleteConversation {
+        optional ProtocolType type = 1 [ default = S_2_C_CHAT_DELETE_CONVERSATION];
+        optional int64 role_id = 2;
+        optional int32 zone_id = 3;
+}
+
+message C2S_ChatReportViolation {
+        optional ProtocolType type = 1 [ default = C_2_S_CHAT_REPORT_VIOLATION];
+        optional int32 report_scene = 2;
+        optional int32 report_entrance = 3;
+        optional int32 report_type = 4;
+        optional string report_msg = 5;
+        optional int64 target_id = 6;
+        optional string target_name = 7;
+        optional int32 target_zone_id = 8;
+}
+
+message S2C_ChatReportViolation {
+        optional ProtocolType type = 1 [ default = S_2_C_CHAT_REPORT_VIOLATION];
+        optional int32 ret = 2; //0:ok,1:type error,2:no player,3:no crop,4:msg too long
+}

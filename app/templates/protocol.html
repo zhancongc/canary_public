@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>protocol</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col s6">
+            <div class="card">
+                <div class="card-content">
+                    <h3>协议测试</h3>
+                    <form method="post" name="protocol">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">dns</i>
+                                <select id="server_id">
+                                    <option value="" disabled selected>请选择游戏服</option>
+                                    <option value="3000">腾讯sdk服</option>
+                                    <option value="1002">TX-BVT-001服</option>
+                                    <option value="20">Wilson服</option>
+                                    <option value="14">策划十三服</option>
+                                    <option value="7">老五服</option>
+                                </select>
+                                <label>游戏服</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">perm_identity</i>
+                                <input placeholder="请填写登陆名称" id="login_name" type="text" class="validate">
+                                <label for="login_name">登陆名</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">import_export</i>
+                                <input id="protocol_name" type="text" class="validate" placeholder="请输入协议号，7801">
+                                <label for="protocol_name">协议号</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">mode_edit</i>
+                                <textarea id="parameter" class="materialize-textarea" placeholder='{"msg_type": 2,"zone_id": 0,"contact_player_name": "","content": "黄河远上白云间，一片孤城万仞山。","content_type_num": 1,"to_role_id": 0}'></textarea>
+                                <label for="parameter">接口参数</label>
+                            </div>
+                        </div>
+                        <a class="waves-effect waves-light btn" id="protocol_test">
+                            <i class="material-icons right">send</i>发送</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col s6">
+                <div class="card">
+                    <div class="card-content" id="response">
+                        <h3>协议返回</h3>
+                    </div>
+                </div>
+        </div>
+        <div class="col s6">
+            <div class="card">
+                <div class="card-content">
+            <a class="waves-effect waves-light btn" href="/logs/" target="_blank">接口日志</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+    $('#parameter').trigger('autoresize');
+    $(document).ready(function(){
+        $("#protocol_test").click(function(){
+            $("#output-content").empty();
+            var login_name = $('#login_name').val();
+            var server_id = $('#server_id').val();
+            var protocol_name = $('#protocol_name').val();
+            var parameter = $('#parameter').val();
+            console.log(login_name, server_id, protocol_name, parameter);
+            $.ajax({
+                url: "/protocol_test",
+                type: "POST",
+                data : {
+                    "server_id": server_id,
+                    "login_name": login_name,
+                    "protocol_name": protocol_name,
+                    "parameter": parameter,
+                },
+                success: function(res) {
+                    console.log(res);
+                    $("#response").append("<p>"+res.data+"</p>");
+                }
+            });
+            Materialize.toast("请求处理中，请稍等...", 3000);
+        });
+    });
+</script>
+{% endblock %}

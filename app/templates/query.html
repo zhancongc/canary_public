@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Output</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+<!--        <div class="card">-->
+<!--            <div class="card-content">-->
+<!--            <h5>腾讯sdk服编译时间: {{ compile_time }}</h5>-->
+<!--&lt;!&ndash;                <a class="waves-effect waves-light btn" id="get_compile_time">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <i class="material-icons right">replay</i>刷新</a>&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="card">
+            <div class="card-content">
+            <h2>玩家信息查询</h2>
+            <form method="post">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">dns</i>
+                    <select id="server_id">
+                        <option value="" disabled selected>请选择游戏服</option>
+                        <option value="3000">腾讯sdk服</option>
+                        <option value="1002">TX-BVT-001服</option>
+                        <option value="1003">TX-BVT-002服</option>
+                        <option value="20">Wilson服</option>
+                        <option value="14">策划十三服</option>
+                        <option value="7">老五服</option>
+                    </select>
+                    <label>游戏服列表</label>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">perm_identity</i>
+                        <input placeholder="请填写角色id" id="role_id" type="text" class="validate">
+                        <label for="role_id">角色id(role_id)</label>
+                    </div>
+                </div>
+                <a class="waves-effect waves-light btn" id="query_by_role_id">
+                    <i class="material-icons right">send</i>查询</a>
+            </form>
+            </div>
+        </div>
+        <div class="card" id="output">
+            <div class="card-content" id="output-content">
+                <h5>暂无结果</h5>
+            </div>
+        </div>
+        <div style="height:260px"></div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+        $(document).ready(function(){
+            $("#query_by_role_id").click(function(){
+                $("#output-content").empty();
+                var role_id = $('#role_id').val();
+                var server_id = $('#server_id').val();
+                $.ajax({
+                    url: "/query_by_role_id",
+                    type: "POST",
+                    data: {"server_id": server_id, "role_id": role_id},
+                    success: function(res) {
+                        if (res.state == 0) {
+                            $("#output-content").append('<h3>查询结果</h3>');
+                            $("#output-content").append('<ul class="collection"></ul>');
+                            var baseinfo = JSON.parse(res.data).baseinfo;
+                            for (var item in baseinfo){
+                                value = baseinfo[item]
+                                $("#output-content > ul").append(`<li class="collection-item">${item}: ${value}</li>`);
+                            }
+                        } else {
+                            $("#output-content").append("<h5>"+ res.msg +"</h5>");
+                        }
+                    }
+                });
+                Materialize.toast("请求处理中，请稍等...", 2000);
+            });
+        });
+    </script>
+{% endblock %}
+
