@@ -1,14 +1,14 @@
-# wly_test_tool说明文档
+# canary 说明文档
 ---
 > project_name  :   wly_test_tool
 >
-> svn url       :   svn://10.0.253.72/wly_test_tool
+> svn url       :   svn://10.0.253.72/canary
 >
 > author        :   zhancongc@icloud.com
 >
 > create_date   :   ‎2020‎/07‎/‎24‎ ‏0‎9:36:12
 >
-> description   :   卧龙2基于protobuf协议的接口测试平台
+> description   :   基于protobuf协议的接口测试工具平台
 
 [TOC]
 
@@ -17,7 +17,7 @@
 ### 1.1checkout项目
 
 ```shell
-svn co svn://10.0.253.72/wly_test_tool
+svn co svn://10.0.253.72/canary
 ```
 
 ### 1.2安装python2.7.13
