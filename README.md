@@ -1,6 +1,6 @@
 # canary 说明文档
 ---
-> project_name  :   wly_test_tool
+> project_name  :   canary
 >
 > svn url       :   svn://10.0.253.72/canary
 >
